@@ -1297,6 +1297,57 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1000943810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1000943812}
+  - component: {fileID: 1000943811}
+  m_Layer: 0
+  m_Name: Pathfinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1000943811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000943810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6d587917418bd4899209af425f6949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heuristicWeight: 1.5
+  baseMaterial: {fileID: 2100000, guid: c5e039ebcc80a4f4e92b4225b8d01437, type: 2}
+  startPositionMaterial: {fileID: 2100000, guid: 46d24d4235673b744a74332bdc2f90f8, type: 2}
+  endPositionMaterial: {fileID: 2100000, guid: 3a7ba3d89d81a5c43935f3b366a153d3, type: 2}
+  pathMaterial: {fileID: 2100000, guid: 9dc38e35c952a924c938b1f45d20d0e8, type: 2}
+  startTile: {fileID: 0}
+  endTile: {fileID: 0}
+--- !u!4 &1000943812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000943810}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1335690587
 GameObject:
   m_ObjectHideFlags: 0
@@ -2688,6 +2739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1349752629414957747, guid: d3de1eb6ebe260a43ada7c633aa100ac, type: 3}
+  mapTiles: []
 --- !u!4 &1957193125
 Transform:
   m_ObjectHideFlags: 0
@@ -2982,3 +3034,4 @@ SceneRoots:
   - {fileID: 1957193125}
   - {fileID: 983981463}
   - {fileID: 1479324412}
+  - {fileID: 1000943812}

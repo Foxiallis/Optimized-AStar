@@ -62,6 +62,6 @@ public class CameraController : MonoBehaviour
     private void HandleTileClick(MapTile tile)
     {
         if (isEditMode) tile.ChangePassability();
-        else return; //TODO
+        else Pathfinder.Instance.OnTileClick(tile);
     }
 }

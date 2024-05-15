@@ -7,8 +7,8 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     public MapTile tilePrefab;
-    public MapTile[,] mapTiles;
-    public int[,] map;
+    [HideInInspector]
+    public List<MapTile> mapTiles;
 
     private int xSize;
     private int ySize;
@@ -28,8 +28,6 @@ public class MapManager : MonoBehaviour
     {
         xSize = 4;
         ySize = 4;
-        mapTiles = new MapTile[xSize, ySize];
-        map = new int[xSize, ySize];
     }
 
     public void GenerateMap()
@@ -40,9 +38,9 @@ public class MapManager : MonoBehaviour
         {
             for (int y = 0; y < ySize; y++)
             {
-                mapTiles[x, y] = Instantiate(tilePrefab, new Vector3(x - xCornerPosition, MapTile.PASSABLE_CUBE_HEIGHT / 2f, y - yCornerPosition), Quaternion.identity, transform);
-                mapTiles[x, y].Initialize(x, y);
-                map[x, y] = 1;
+                MapTile tile = Instantiate(tilePrefab, new Vector3(x - xCornerPosition, MapTile.PASSABLE_CUBE_HEIGHT / 2f, y - yCornerPosition), Quaternion.identity, transform);
+                tile.Initialize(x, y);
+                mapTiles.Add(tile);
             }
         }
     }
@@ -55,8 +53,7 @@ public class MapManager : MonoBehaviour
             Destroy(tile.gameObject);
         }
 
-        mapTiles = new MapTile[xSize, ySize];
-        map = new int[xSize, ySize];
+        mapTiles = new();
     }
 
     //Functions for updating map size from input fields
