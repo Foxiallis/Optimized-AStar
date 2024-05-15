@@ -9,11 +9,20 @@ public class MapTile : MonoBehaviour
     public const float PASSABLE_CUBE_HEIGHT = 0.2f;
     public const float IMPASSABLE_CUBE_HEIGHT = 1f;
 
-    private float passabilityShift => (IMPASSABLE_CUBE_HEIGHT / 2f) - (PASSABLE_CUBE_HEIGHT / 2f);
+    private int x, y;
 
+    private float passabilityShift => (IMPASSABLE_CUBE_HEIGHT / 2f) - (PASSABLE_CUBE_HEIGHT / 2f); //Aligns the higher tiles in line with the lower ones
+
+
+    public void Initialize(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
     public void ChangePassability()
     {
         passable = !passable;
+        MapManager.Instance.map[x, y] = passable ? 1 : 0;
         SetSizeFromPassability();
     }
 

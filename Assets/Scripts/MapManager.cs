@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
-    public GameObject tilePrefab;
-    public GameObject[,] map;
+    public static MapManager Instance;
+
+    public MapTile tilePrefab;
+    public MapTile[,] mapTiles;
+    public int[,] map;
 
     private int xSize;
     private int ySize;
@@ -16,11 +19,17 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
+        SetInitialMapValues();
+        GenerateMap();
+    }
+
+    private void SetInitialMapValues()
+    {
         xSize = 4;
         ySize = 4;
-        map = new GameObject[xSize, ySize];
-
-        GenerateMap();
+        mapTiles = new MapTile[xSize, ySize];
+        map = new int[xSize, ySize];
     }
 
     public void GenerateMap()
@@ -31,19 +40,22 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < ySize; y++)
             {
-                map[x, y] = Instantiate(tilePrefab, new Vector3(x - xCornerPosition, MapTile.PASSABLE_CUBE_HEIGHT / 2f, y - yCornerPosition), Quaternion.identity, transform);
+                mapTiles[x, y] = Instantiate(tilePrefab, new Vector3(x - xCornerPosition, MapTile.PASSABLE_CUBE_HEIGHT / 2f, y - yCornerPosition), Quaternion.identity, transform);
+                mapTiles[x, y].Initialize(x, y);
+                map[x, y] = 1;
             }
         }
     }
 
     private void ClearMap()
     {
-        foreach(GameObject tile in map)
+        foreach(MapTile tile in mapTiles)
         {
-            Destroy(tile);
+            Destroy(tile.gameObject);
         }
 
-        map = new GameObject[xSize, ySize];
+        mapTiles = new MapTile[xSize, ySize];
+        map = new int[xSize, ySize];
     }
 
     //Functions for updating map size from input fields
