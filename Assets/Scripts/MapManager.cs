@@ -51,6 +51,7 @@ public class MapManager : MonoBehaviour
     {
         foreach(MapTile tile in mapTiles)
         {
+            if (tile == null) return;
             Destroy(tile.gameObject);
         }
 

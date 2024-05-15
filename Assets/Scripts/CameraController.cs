@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public float rotationSpeed;
+
     public bool isEditMode { private get; set; }
 
     private Camera cam;
+    private Vector3 initialMousePosition;
 
     private void Awake()
     {
@@ -19,7 +22,28 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             TryRaycastTile();
-        }  
+        }
+        HandleDrag();
+    }
+
+    private void HandleDrag()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            initialMousePosition = Input.mousePosition;
+        }
+
+        if (!Input.GetMouseButton(1)) return;
+
+        Vector3 deltaMousePosition = Input.mousePosition - initialMousePosition;
+
+        initialMousePosition = Input.mousePosition;
+
+        float deltaX = deltaMousePosition.x * rotationSpeed * Time.deltaTime;
+        float deltaY = deltaMousePosition.y * rotationSpeed * Time.deltaTime;
+
+        transform.RotateAround(Vector3.zero, Vector3.up, deltaX);
+        transform.RotateAround(Vector3.zero, transform.right, -deltaY); //inverted for more intuitive feel
     }
 
     private void TryRaycastTile()
