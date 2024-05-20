@@ -2330,6 +2330,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1000943811}
+        m_TargetAssemblyTypeName: Pathfinder, Assembly-CSharp
+        m_MethodName: DeselectStartTile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1769482965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3956,7 +3968,7 @@ Transform:
   m_GameObject: {fileID: 4345077808851637332}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4070,6 +4082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3965139725323898606}
   - component: {fileID: 7054657123892155540}
+  - component: {fileID: 7054657123892155541}
   m_Layer: 8
   m_Name: PlayerArmature
   m_TagString: Player
@@ -4843,6 +4856,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7054657123892155541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4345077808851637332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd66e6f5c987174f9ba57a46d81cb1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileOffset: {x: 0, y: 0.2, z: 0}
+  speed: 3
+  animationSpeed: 4
+  accelerationSeconds: 1
 --- !u!4 &7055248492366031949
 Transform:
   m_ObjectHideFlags: 0

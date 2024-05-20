@@ -10,9 +10,9 @@ public class MapTile : MonoBehaviour
 
     public int x, y;
 
-    //[HideInInspector]
+    [HideInInspector]
     public MapTile previousTileForward;
-    //[HideInInspector]
+    [HideInInspector]
     public MapTile previousTileBackward; //for forward and backward search
     [HideInInspector]
     public float g, h;

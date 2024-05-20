@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
 
 /*
  * I've chosen A* algorithm as it's the fastest algorithm for such use case (2D array with same distances between the tiles) that doesn't sacrifice any significant quality.
@@ -13,7 +10,8 @@ public class Pathfinder : MonoBehaviour
 {
     public static Pathfinder Instance;
 
-    public float heuristicWeight; //Optimization: weighted heuristic distance will speed up the search at the cost of optimality
+    [SerializeField]
+    private float heuristicWeight; //Optimization: weighted heuristic distance will speed up the search at the cost of optimality
 
     public Material baseMaterial;
     public Material startPositionMaterial;
@@ -63,11 +61,17 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    private void ClearTileMaterials()
+    //Used during mode switching from walking to editing
+    public void DeselectStartTile()
+    {
+        SetStartTile(startTile, false);
+    }
+
+    private void ClearTileMaterials(bool skipStartTile = true)
     {
         foreach (MapTile tile in MapManager.Instance.mapTiles)
         {
-            if (tile == startTile) continue;
+            if (skipStartTile && tile == startTile) continue;
 
             tile.UpdateMaterial(baseMaterial);
         }
@@ -77,14 +81,20 @@ public class Pathfinder : MonoBehaviour
     {
         tile.UpdateMaterial(select ? endPositionMaterial : baseMaterial);
         endTile = select ? tile : null;
-        
-        if (!select) ClearTileMaterials(); //Deselecting end tile clears all paths
+
+        if (!select)
+        {
+            ClearTileMaterials(); //Deselecting end tile clears all paths
+            PlayerModelController.Instance.ResetPosition(startTile);
+        }
     }
 
     private void SetStartTile(MapTile tile, bool select)
     {
-        tile.UpdateMaterial(select ? startPositionMaterial : baseMaterial);
+        if (tile != null) tile.UpdateMaterial(select ? startPositionMaterial : baseMaterial);
         startTile = select ? tile : null;
+
+        if (select) PlayerModelController.Instance.ResetPosition(startTile);
 
         if (!select && endTile != null) SetEndTile(endTile, false); //Deselecting start tile also deselects end tile to avoid undefined behavior
     }
@@ -113,8 +123,6 @@ public class Pathfinder : MonoBehaviour
 
     private void FindOptimalPath()
     {
-        float pickedTime = Time.unscaledTime;
-
         HashSet<MapTile> startOpenSet = new() { startTile };
         HashSet<MapTile> endOpenSet = new() { endTile };
 
@@ -127,18 +135,19 @@ public class Pathfinder : MonoBehaviour
         while (startOpenSet.Count > 0 && endOpenSet.Count > 0 && !solutionFound)
         {
             //Optimization: bidirectional search to find the meeting point from the two points
-            solutionFound = Step(startOpenSet, startClosedSet, endClosedSet, true, out meetingTile) || 
-                            Step(endOpenSet, endClosedSet, startClosedSet, false, out meetingTile);
+            solutionFound = Step(startOpenSet, startClosedSet, true, out meetingTile) ||
+                            Step(endOpenSet, endClosedSet, false, out meetingTile);
         }
 
-        if (solutionFound) 
+        if (solutionFound)
         {
-            Debug.Log($"Found solution in {Time.unscaledTime - pickedTime}s");
-            ColorPath(meetingTile);
+            List<MapTile> path = ReconstructPath(meetingTile);
+            ColorPath(path);
+            PlayerModelController.Instance.StartWalking(path);
         }
     }
 
-    private bool Step(HashSet<MapTile> openSet, HashSet<MapTile> closedSet, HashSet<MapTile> otherClosedSet, bool searchForward, out MapTile meetingTile)
+    private bool Step(HashSet<MapTile> openSet, HashSet<MapTile> closedSet, bool searchForward, out MapTile meetingTile)
     {
         if (openSet.Count == 0)
         {
@@ -187,9 +196,9 @@ public class Pathfinder : MonoBehaviour
         return false;
     }
 
-    private void ColorPath(MapTile meetingTile)
+    private void ColorPath(List<MapTile> path)
     {
-        foreach (MapTile tile in ReconstructPath(meetingTile))
+        foreach (MapTile tile in path)
         {
             if (tile != startTile && tile != endTile)
             {

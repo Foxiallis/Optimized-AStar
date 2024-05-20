@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,11 +42,13 @@ public class MapManager : MonoBehaviour
                 mapTiles.Add(tile);
             }
         }
+
+        PlayerModelController.Instance.ResetPosition(mapTiles[0]);
     }
 
     private void ClearMap()
     {
-        foreach(MapTile tile in mapTiles)
+        foreach (MapTile tile in mapTiles)
         {
             if (tile == null) return;
             Destroy(tile.gameObject);
